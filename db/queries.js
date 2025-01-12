@@ -96,7 +96,8 @@ async function createGame (gameName, releaseDate) {
     INSERT INTO
       game (name, release_date)
     VALUES
-      ( $1, $2 );
+      ( $1, $2 )
+    RETURNING *;
     `, [gameName, releaseDate]);
   return rows;
 }
@@ -106,7 +107,8 @@ async function createDeveloper (devName) {
     INSERT INTO
       developer (name)
     VALUES
-      ( $1 );
+      ( $1 )
+    RETURNING *;
     `, [devName]);
   return rows;
 }
@@ -116,8 +118,31 @@ async function createGenre (genreName) {
     INSERT INTO
       genre (name)
     VALUES
-      ( $1 );
+      ( $1 )
+    RETURNING *;
     `, [genreName]);
+  return rows;
+}
+
+async function addGenre (gameId, genreId) {
+  const { rows } = await pool.query(`
+    INSERT INTO
+      game_genre (game_id, genre_id)
+    VALUES
+      ( $1, $2 )
+    RETURNING *;
+    `, [gameId, genreId]);
+  return rows;
+}
+
+async function addDeveloper (gameId, devId) {
+  const { rows } = await pool.query(`
+    INSERT INTO
+      game_developer (game_id, developer_id)
+    VALUES
+      ( $1, $2 )
+    RETURNING *;
+    `, [gameId, devId]);
   return rows;
 }
 
@@ -130,5 +155,7 @@ module.exports = {
   getGenreGames,
   createGame,
   createDeveloper,
-  createGenre
+  createGenre,
+  addGenre,
+  addDeveloper
 };

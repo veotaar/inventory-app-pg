@@ -91,11 +91,44 @@ async function getGenreGames (genreId) {
   return rows;
 }
 
+async function createGame (gameName, releaseDate) {
+  const { rows } = await pool.query(`
+    INSERT INTO
+      game (name, release_date)
+    VALUES
+      ( $1, $2 );
+    `, [gameName, releaseDate]);
+  return rows;
+}
+
+async function createDeveloper (devName) {
+  const { rows } = await pool.query(`
+    INSERT INTO
+      developer (name)
+    VALUES
+      ( $1 );
+    `, [devName]);
+  return rows;
+}
+
+async function createGenre (genreName) {
+  const { rows } = await pool.query(`
+    INSERT INTO
+      genre (name)
+    VALUES
+      ( $1 );
+    `, [genreName]);
+  return rows;
+}
+
 module.exports = {
   getAllGames,
   getGameDetails,
   getGameGenres,
   getGameDevs,
   getDevelopersGames,
-  getGenreGames
+  getGenreGames,
+  createGame,
+  createDeveloper,
+  createGenre
 };

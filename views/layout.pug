@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/style.css')
+  body
+    block navigation
+      nav
+        ul
+          li
+            a(href='/catalog') Home
+          li
+            a(href='/catalog/games') All games
+          li
+            a(href='/catalog/genres') All genres
+          li
+            a(href='/catalog/developers') All developers
+          li
+            hr
+          li
+            a(href='/catalog/game/new') Add new game
+          li
+            a(href='/catalog/genre/new') Add new genre
+
+    block content

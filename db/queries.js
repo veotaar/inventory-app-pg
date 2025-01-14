@@ -146,6 +146,38 @@ async function addDeveloper (gameId, devId) {
   return rows;
 }
 
+async function getCounts () {
+  const { rows } = await pool.query(`
+    SELECT 'gameCount' AS table_name, COUNT(*) AS row_count FROM game
+    UNION ALL
+    SELECT 'devCount' AS table_name, COUNT(*) AS row_count FROM developer
+    UNION ALL
+    SELECT 'genreCount' AS table_name, COUNT(*) AS row_count FROM genre;
+  `);
+
+  const counts = {
+    gameCount: 0,
+    devCount: 0,
+    genreCount: 0
+  };
+
+  for (const row of rows) {
+    if (row.table_name === 'gameCount') {
+      counts.gameCount = row.row_count;
+    }
+
+    if (row.table_name === 'devCount') {
+      counts.devCount = row.row_count;
+    }
+
+    if (row.table_name === 'genreCount') {
+      counts.genreCount = row.row_count;
+    }
+  }
+
+  return counts;
+}
+
 module.exports = {
   getAllGames,
   getGameDetails,
@@ -157,5 +189,6 @@ module.exports = {
   createDeveloper,
   createGenre,
   addGenre,
-  addDeveloper
+  addDeveloper,
+  getCounts
 };
